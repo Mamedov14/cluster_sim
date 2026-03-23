@@ -29,7 +29,7 @@ def exp_containers_sojourn() -> pd.DataFrame:
             num_nodes           = 3,
             containers_per_node = c,
             arrival_rate        = 3.0,
-            base_service_rate   = 6.0,
+            base_service_rate   = 22.242,  # μ(3,1) из таблицы Фунг и др. 2025
             sim_time            = 500.0,
             balance_policy      = "round_robin",
         )
@@ -51,7 +51,7 @@ def exp_balance_with_containers() -> pd.DataFrame:
             num_nodes           = 3,
             containers_per_node = 3,
             arrival_rate        = 3.0,
-            base_service_rate   = 6.0,
+            base_service_rate   = 22.242,  # μ(3,1) из таблицы Фунг и др. 2025
             sim_time            = 500.0,
             balance_policy      = policy,
             node_failure_type   = "down",
@@ -76,7 +76,7 @@ def exp_node_failure_types() -> pd.DataFrame:
             num_nodes           = 3,
             containers_per_node = 3,
             arrival_rate        = 3.0,
-            base_service_rate   = 6.0,
+            base_service_rate   = 22.242,  # μ(3,1) из таблицы Фунг и др. 2025
             sim_time            = 500.0,
             balance_policy      = "round_robin",
             node_failure_type   = ftype,
@@ -103,7 +103,7 @@ def exp_container_failures() -> pd.DataFrame:
             num_nodes           = 3,
             containers_per_node = 3,
             arrival_rate        = 3.0,
-            base_service_rate   = 6.0,
+            base_service_rate   = 22.242,  # μ(3,1) из таблицы Фунг и др. 2025
             sim_time            = 500.0,
             balance_policy      = "round_robin",
             container_mttf      = 50.0,
@@ -127,7 +127,7 @@ def exp_node_mttf() -> pd.DataFrame:
             num_nodes           = 3,
             containers_per_node = 3,
             arrival_rate        = 3.0,
-            base_service_rate   = 6.0,
+            base_service_rate   = 22.242,  # μ(3,1) из таблицы Фунг и др. 2025
             sim_time            = 500.0,
             balance_policy      = "round_robin",
             node_failure_type   = "down",
@@ -159,7 +159,7 @@ def exp_combined_failures() -> pd.DataFrame:
             num_nodes           = 3,
             containers_per_node = 3,
             arrival_rate        = 3.0,
-            base_service_rate   = 6.0,
+            base_service_rate   = 22.242,  # μ(3,1) из таблицы Фунг и др. 2025
             sim_time            = 500.0,
             balance_policy      = "round_robin",
             node_failure_type   = "down",
