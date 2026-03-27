@@ -93,13 +93,13 @@ class SimConfig:
     balance_policy:      BalancePolicy = "least_loaded"
 
     # Параметры отказов узла (каскад UP→DEGRADE→DOWN)
-    node_mttf_fail:      float = 40.0   # MTTF аппаратного отказа
+    node_mttf_fail:      float = 1000.0   # MTTF аппаратного отказа
     degrade_percent:     float = 0.8    # MTTF_degrade = mttf_fail * degrade_percent
     node_mttr:           float = 15.0   # среднее время восстановления узла
     node_degrade_factor: float = 2.0    # во сколько раз снижается μ при degrade
 
     # Параметры отказов контейнера
-    container_mttf:      float = 50.0
+    container_mttf:      float = 1000.0
     container_mttr:      float = 10.0
 
     # Параметры балансировщика (SPOF)
@@ -558,7 +558,7 @@ def execute_all_experiments() -> dict:
 
     # --- Серия 1: MTTF_fail ---
     print("[1/4] Влияние MTTF_fail (кривые старения 70% / 80% / 90%)...")
-    for mttf in [20, 30, 40, 50, 60, 80]:
+    for mttf in [500, 1000, 1500, 2000, 2500, 3000]:
         for pct in [0.7, 0.8, 0.9]:
             cfg = SimConfig(node_mttf_fail=float(mttf), degrade_percent=pct)
             res = run_replications(cfg)
@@ -571,7 +571,7 @@ def execute_all_experiments() -> dict:
     # --- Серия 2: MTTR ---
     print("[2/4] Влияние MTTR восстановления сервера...")
     for mttr in [5, 10, 15, 20, 25]:
-        cfg = SimConfig(node_mttr=float(mttr), node_mttf_fail=40.0, degrade_percent=0.8)
+        cfg = SimConfig(node_mttr=float(mttr), node_mttf_fail=1000.0, degrade_percent=0.8)
         res = run_replications(cfg)
         res["mttr"] = mttr
         plot_data["mttr"].append(res)
@@ -581,7 +581,7 @@ def execute_all_experiments() -> dict:
     # --- Серия 3: Политики балансировки ---
     print("[3/4] Сравнение политик балансировки...")
     for pol in ["round_robin", "least_loaded", "random"]:
-        cfg = SimConfig(balance_policy=pol, node_mttf_fail=40.0,
+        cfg = SimConfig(balance_policy=pol, node_mttf_fail=1000.0,
                         degrade_percent=0.8, node_mttr=15.0)
         res = run_replications(cfg)
         res["policy"] = pol
@@ -592,7 +592,7 @@ def execute_all_experiments() -> dict:
     # --- Серия 4: Интенсивность λ ---
     print("[4/4] Влияние интенсивности λ = [10 .. 30] задач/с...")
     for lam in [10.0, 14.0, 18.0, 22.0, 26.0, 30.0]:
-        cfg = SimConfig(arrival_rate=lam, node_mttf_fail=40.0,
+        cfg = SimConfig(arrival_rate=lam, node_mttf_fail=1000.0,
                         degrade_percent=0.8, balance_policy="least_loaded")
         res = run_replications(cfg)
         res["lambda"] = lam
@@ -682,9 +682,9 @@ def generate_plots(data: dict):
     print("\nГенерация 24 графиков...")
 
     cfg_fail = "λ=16, Pol=LL, MTTR=15, Q=∞"
-    cfg_mttr = "λ=16, Pol=LL, Fail=40, Deg=80%, Q=∞"
-    cfg_bal  = "λ=16, Fail=40, Deg=80%, MTTR=15, Q=∞"
-    cfg_lam  = "Pol=LL, Fail=40, Deg=80%, MTTR=15, Q=∞"
+    cfg_mttr = "λ=16, Pol=LL, Fail=1000, Deg=80%, Q=∞"
+    cfg_bal  = "λ=16, Fail=1000, Deg=80%, MTTR=15, Q=∞"
+    cfg_lam  = "Pol=LL, Fail=1000, Deg=80%, MTTR=15, Q=∞"
 
     df_f = pd.DataFrame(data["fail"])
     df_m = pd.DataFrame(data["mttr"])
