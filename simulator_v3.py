@@ -76,15 +76,15 @@ def container_service_rate(base_rate: float, n_total: int, m_active: int) -> flo
 @dataclass
 class SimConfig:
     # Топология кластера
-    num_nodes:           int   = 3       # число рабочих узлов N
-    containers_per_node: int   = 3       # контейнеров на узел C
+    num_nodes:           int   = 4       # число рабочих узлов N
+    containers_per_node: int   = 9       # контейнеров на узел C
 
     # Очередь (бесконечная — для наблюдения взрывного роста задержек)
     queue_capacity:      int   = 999_999
 
     # Входной поток
     arrival_rate:        float = 16.0   # λ, задач/с
-    base_service_rate:   float = 22.242 # μ₀ = μ(3,1), с⁻¹
+    base_service_rate:   float = 21.957 # μ₀ = μ(9,1), с⁻¹
 
     # Время прогона
     sim_time:            float = 5000.0  # секунд
@@ -100,7 +100,7 @@ class SimConfig:
 
     # Параметры отказов контейнера
     container_mttf:      float = 1000.0
-    container_mttr:      float = 10.0
+    container_mttr:      float = 2.0
 
     # Параметры балансировщика (SPOF)
     lb_service_rate:     float = 50.0   # интенсивность маршрутизации LB
@@ -681,7 +681,7 @@ def generate_plots(data: dict):
     matplotlib.use("Agg")
     print("\nГенерация 24 графиков...")
 
-    cfg_fail = "λ=16, Pol=LL, MTTR=15, Q=∞"
+    cfg_fail = "λ=16, Pol=LL, MTTR=15, N=4, C=9, Q=∞"
     cfg_mttr = "λ=16, Pol=LL, Fail=3500, Deg=80%, Q=∞"
     cfg_bal  = "λ=16, Fail=3500, Deg=80%, MTTR=15, Q=∞"
     cfg_lam  = "Pol=LL, Fail=3500, Deg=80%, MTTR=15, Q=∞"
