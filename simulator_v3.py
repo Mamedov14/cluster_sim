@@ -234,6 +234,11 @@ class Node:
               ждём оставшееся время → переходим в DOWN →
               запрашиваем ремонтника → восстанавливаемся.
         """
+
+        # Начальный сдвиг — имитирует разный «возраст» узлов
+        initial_offset = self.cfg.node_mttf_fail * (self.node_id / self.cfg.num_nodes)
+        yield self.env.timeout(self.rng.exponential(initial_offset + 1.0))
+
         while True:
             mttf_degrade = self.cfg.node_mttf_fail * self.cfg.degrade_percent
             yield self.env.timeout(self.rng.exponential(mttf_degrade))
